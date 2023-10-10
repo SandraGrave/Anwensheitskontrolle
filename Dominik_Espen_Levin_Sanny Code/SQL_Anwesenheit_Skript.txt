@@ -1,0 +1,46 @@
+DROP DATABASE IF EXISTS Anwesenheit;
+CREATE DATABASE Anwesenheit;
+USE Anwesenheit;
+
+/*-------------------------------------- User -----------------------------------------------*/
+DROP USER if EXISTS 'Gruppe1'@'localhost';
+CREATE USER 'Gruppe1'@'localhost' IDENTIFIED BY 'Gruppe1';
+GRANT ALL PRIVILEGES ON Anwesenheit.* TO 'Gruppe1'@'localhost';
+FLUSH PRIVILEGES; -- Aktualisieren der Berechtigungen
+
+/*----------------------------------- Schueler ----------------------------------------------*/
+CREATE TABLE SCHUELER (
+   SCHUELERID		INT AUTO_INCREMENT,
+   CHIPTAG           	VARCHAR(50),
+   NACHNAME             VARCHAR(50),
+   VORNAME              VARCHAR(50),
+   KLASSE               VARCHAR(50),
+   PRIMARY KEY (SCHUELERID)
+)AUTO_INCREMENT=1001;
+
+/*-------------- -------------------- Raum_RFC_Reader ------------------------------------------*/
+CREATE TABLE RAUM_RFC_READER (
+   RAUMID               INT,
+   PRIMARY KEY (RAUMID)
+);
+
+/*----------------------------- ZT_Schueler_Raum_RFC_Reader --------------------------------------------*/
+CREATE TABLE ZT_SCHUELER_RAUM_RFC_READER (
+     SCHUELERID         INT,
+     RAUMID             INTEGER,
+     Datum					DATE,
+     ANKUNFTSZEIT       TIME
+);
+
+ALTER TABLE ZT_SCHUELER_RAUM_RFC_READER ADD FOREIGN KEY (SCHUELERID) REFERENCES SCHUELER (SCHUELERID) ON DELETE CASCADE;
+ALTER TABLE ZT_SCHUELER_RAUM_RFC_READER ADD FOREIGN KEY (RAUMID) REFERENCES RAUM_RFC_READER (RAUMID) ON DELETE CASCADE;
+
+/*------------------------------------- INSERTS -----------------------------------------------------------*/
+/*------------------------------------- SCHUELER ---------------------------------------------------*/
+INSERT INTO SCHUELER (CHIPTAG, NACHNAME, VORNAME, KLASSE) VALUES ('205214153129','Wellensteyn','Kira','IT2b');
+INSERT INTO SCHUELER (CHIPTAG, NACHNAME, VORNAME, KLASSE) VALUES ('3019224612','Meyer','Sarah','IT2b');
+INSERT INTO SCHUELER (CHIPTAG, NACHNAME, VORNAME, KLASSE) VALUES ('1832178983','Schmidt','Christina','IT2g');
+INSERT INTO SCHUELER (CHIPTAG, NACHNAME, VORNAME, KLASSE) VALUES ('5312092118','Peter','Petersen','IT2h');
+
+/*------------------------------------- RAUM_RFC_READER --------------------------------------------*/
+INSERT INTO RAUM_RFC_READER (RAUMID) VALUES (103);
